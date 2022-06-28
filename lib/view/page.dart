@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:localization/theme/themeManager.dart';
+import 'package:localization/theme/themes.dart';
 import 'package:localization/translations/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage(this.darkTheme, {Key? key, required this.onPressed})
-      : super(key: key);
+  const HomePage({Key? key}) : super(key: key);
 
-  bool darkTheme;
-  Function onPressed;
   @override
   State<HomePage> createState() => _HomePageState();
 }
@@ -18,11 +18,18 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
         appBar: AppBar(
           actions: <Widget>[
-            Switch(
-                value: widget.darkTheme,
-                onChanged: (changedTheme) {
-                  widget.onPressed(changedTheme);
-                })
+            IconButton(
+                onPressed: () {
+                  Provider.of<themeManager>(context, listen: false)
+                      .setTheme(Themes.Dark);
+                },
+                icon: const Icon(Icons.tonality)),
+            IconButton(
+                onPressed: () {
+                  Provider.of<themeManager>(context, listen: false)
+                      .setTheme(Themes.Light);
+                },
+                icon: const Icon(Icons.wb_incandescent))
           ],
         ),
         body: Center(
@@ -34,24 +41,24 @@ class _HomePageState extends State<HomePage> {
               ElevatedButton(
                   onPressed: () {
                     setState(() {
-                      context.setLocale(Locale('de'));
+                      context.setLocale(const Locale('de'));
                     });
                   },
-                  child: Text("Deutsch")),
+                  child: const Text("Deutsch")),
               ElevatedButton(
                   onPressed: () {
                     setState(() {
-                      context.setLocale(Locale('en'));
+                      context.setLocale(const Locale('en'));
                     });
                   },
-                  child: Text("English")),
+                  child: const Text("English")),
               ElevatedButton(
                   onPressed: () {
                     setState(() {
-                      context.setLocale(Locale('tr'));
+                      context.setLocale(const Locale('tr'));
                     });
                   },
-                  child: Text("Türkçe"))
+                  child: const Text("Türkçe"))
             ],
           ),
         ));

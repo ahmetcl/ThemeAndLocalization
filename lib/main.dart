@@ -1,7 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:localization/theme/themeManager.dart';
 import 'package:localization/view/page.dart';
 import 'package:localization/translations/codegen_loader.g.dart';
+import 'package:provider/provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -9,35 +11,34 @@ Future<void> main() async {
   runApp(
     EasyLocalization(
       path: 'assets/translations',
-      supportedLocales: [Locale('de'), Locale('en'), Locale('tr')],
-      fallbackLocale: Locale('en'),
-      assetLoader: CodegenLoader(),
-      child: MyApp(),
+      supportedLocales: const [Locale('de'), Locale('en'), Locale('tr')],
+      fallbackLocale: const Locale('en'),
+      assetLoader: const CodegenLoader(),
+      child: const MyApp(),
     ),
   );
 }
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  bool darkTheme = false;
-  @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: darkTheme ? ThemeData.dark() : ThemeData.light(),
-        supportedLocales: context.supportedLocales,
-        localizationsDelegates: context.localizationDelegates,
-        locale: context.locale,
-        home: HomePage(darkTheme, onPressed: (changedTheme) {
-          setState(() {
-            darkTheme = changedTheme;
-          });
+    return MultiProvider(
+        providers: [
+          ChangeNotifierProvider(
+            create: (_) => themeManager(),
+          ),
+        ],
+        child: Consumer<themeManager>(builder: (context, theme, child) {
+          return MaterialApp(
+              title: 'Theme App',
+              debugShowCheckedModeBanner: false,
+              theme: theme.themeData,
+              supportedLocales: context.supportedLocales,
+              localizationsDelegates: context.localizationDelegates,
+              locale: context.locale,
+              home: const HomePage());
         }));
   }
 }
