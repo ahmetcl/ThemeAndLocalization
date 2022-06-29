@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:localization/theme/themeManager.dart';
 import 'package:localization/view/page.dart';
 import 'package:localization/translations/codegen_loader.g.dart';
+import 'package:localization/view/secondPage.dart';
 import 'package:provider/provider.dart';
 
 Future<void> main() async {
@@ -33,6 +34,10 @@ class MyApp extends StatelessWidget {
         child: Consumer<themeManager>(builder: (context, theme, child) {
           return MaterialApp(
               title: 'Theme App',
+              routes: {
+                //'/': (context) => HomePage(),
+                '/second': (context) => SecondPage(),
+              },
               debugShowCheckedModeBanner: false,
               theme: theme.themeData,
               supportedLocales: context.supportedLocales,

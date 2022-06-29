@@ -17,6 +17,11 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          leading: IconButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/second');
+              },
+              icon: const Icon(Icons.pages)),
           actions: <Widget>[
             IconButton(
                 onPressed: () {
